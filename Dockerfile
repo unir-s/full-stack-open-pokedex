@@ -21,6 +21,7 @@ ENV NODE_ENV production
 
 COPY . .
 
+# RUN npm i -g pnpm && pnpm install --frozen-lockfile && pnpm run build
 RUN npm install && npm run build
 FROM debian:bullseye
 
@@ -33,4 +34,4 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV PATH /root/.volta/bin:$PATH
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start-prod" ]
