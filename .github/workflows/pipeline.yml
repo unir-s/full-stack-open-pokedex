@@ -34,17 +34,19 @@ jobs:
           command: pnpm run test:e2e
           start: pnpm run start-prod
           wait-on: http://localhost:5000
-  release:
-    needs: [simple_deployment_pipeline]
-    if: ${{ github.event_name == 'push'  &&  !contains(join(github.event.commits.*.commits), '#skip')}}
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: ${{ github.event_name == 'push' }}
       - name: deploy
+        if: ${{ github.event_name == 'push' }}
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  release:
+    needs: [simple_deployment_pipeline]
+    if: ${{ github.event_name == 'push'  &&  !contains(join(github.event.commits.*.message), '#skip')}}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
         env:
