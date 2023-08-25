@@ -1,11 +1,11 @@
-name: Deployment pipeline
+name: Health Check
 
 on:
-  push:
-    branches:
-      master
-  # schedule:
-    # - cron: '00 20 * * *'
+  # push:
+  #   branches:
+  #     master
+  schedule:
+    - cron: '00 20 * * *'
 
 jobs:
   health_check:
